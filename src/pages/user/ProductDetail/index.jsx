@@ -23,12 +23,15 @@ function ProductDetailPage(props) {
   
   return (
     <>
-      <Row className="detail-name">
-        THÔNG TIN SẢN PHẨM
-        <Divider style={{marginTop: -10, border: '2px groove #237804'}} />
-      </Row>
+      
       
       <Row className="detail-content">
+        <Col span={24}>
+        <Row className="detail-name">
+          THÔNG TIN SẢN PHẨM
+          <Divider style={{marginTop: -10, border: '2px groove #237804'}} />
+        </Row>
+        </Col>
         <Col span={7} className="detail-image">
           <Image
             width={325}

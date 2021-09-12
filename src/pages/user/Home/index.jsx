@@ -246,14 +246,14 @@ function HomePage() {
                   <span>Sản phẩm đạt chuẩn an toàn thực phẩm</span>
                 </li>
                 <li>
-                  <img src={ship} alt="" className='group-list-image'
+                  <img src={ship} alt="ship" className='group-list-image'
                     style={{width: 21, margin: '0 0.4em 4px 0'}}
                   />
                   <span>Giao hàng toàn quốc</span>
                 </li>
                 <li>
-                  <img src={refresh} alt="" className='group-list-image'
-                     style={{width: 23, margin: '5px 0.4em 4px 0'}}
+                  <img src={refresh} alt="refresh" className='group-list-image'
+                     style={{width: 22, margin: '5px 0.3em 4px 0'}}
                   />
                   <span>Đổi trả trong vòng 15 ngày</span>
                 </li>
@@ -293,7 +293,7 @@ function HomePage() {
                   <Select
                     className='select-product'
                     showSearch
-                    style={{ width: 200, }}
+                    style={{ width: 200, marginBottom: 15}}
                     placeholder="Phân loại mặc định"
                     optionFilterProp="children"
                     onChange={onChange}
@@ -310,7 +310,7 @@ function HomePage() {
                   </Select>
                 </div>
           <div style={{ padding: 10 }}>
-            <Row gutter={[17, 20]}>{renderProductList()}</Row>
+            <Row gutter={[22, 25]}>{renderProductList()}</Row>
           </div>
           <Row style={{
             marginBottom: 10

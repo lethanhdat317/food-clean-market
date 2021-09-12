@@ -2,6 +2,7 @@ import { Row, Col, Image, Space } from "antd";
 import { Link } from "react-router-dom";
 import logoHeader from "../../assets/images/logo-mixi-removebg.png";
 import { MailFilled, YoutubeFilled, FacebookFilled } from "@ant-design/icons";
+import { AiFillEnvironment } from "react-icons/ai";
 function Footer() {
   return (
     <>
@@ -65,11 +66,13 @@ function Footer() {
               </p>
               {/* <p><YoutubeFilled /> Youtube: Piano Shop</p> */}
             </Col>
-            <Col span={11} className="footer-col">
+            <Col span={14} className="footer-col">
               <p className="footer-label">Địa chỉ</p>
               <p>
-                86 Nguyen Sinh Sac, Hoa Minh Ward, Lien Chieu District, Da Nang
-                City
+                <AiFillEnvironment className='footer-icons'
+                  style={{height: 17, paddingTop:0}}
+                />
+                86 Nguyễn Sinh Sắc, Phường Hòa Minh, Quận Liên Chiểu, TP Đà Nẵng.
               </p>
             </Col>
           </Row>
