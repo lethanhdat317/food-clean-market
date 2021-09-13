@@ -1,0 +1,276 @@
+{
+  "users": [
+    {
+      "email": "ledat72000@gmail.com",
+      "password": "123456",
+      "name": "Dat",
+      "gender": "male",
+      "role": "admin",
+      "cart": [
+        {
+          "id": "010aa515-8027-46a9-ab9f-86fe3b7fa1ab",
+          "productId": 1,
+          "name": "Chuối",
+          "price": 30000,
+          "count": 1
+        }
+      ],
+      "id": 1
+    },
+    {
+      "email": "user@gmail.com",
+      "password": "123456",
+      "name": "User",
+      "gender": "female",
+      "role": "user",
+      "cart": [
+        {
+          "id": "9c6c1de3-32eb-4595-b611-add7e2dc546e",
+          "productId": 4,
+          "name": "Xoài",
+          "price": 25000,
+          "count": 2
+        },
+        {
+          "id": "05284c72-023e-4b60-90dd-e80d828aae0d",
+          "productId": 2,
+          "name": "Táo",
+          "price": 35000,
+          "count": 1
+        }
+      ],
+      "id": 2
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Trái cây"
+    },
+    {
+      "id": 2,
+      "name": "Rau"
+    },
+    {
+      "name": "Thịt",
+      "id": 3
+    },
+    {
+      "name": "Các loại hạt",
+      "id": 4
+    },
+    {
+      "name": "Cá và hải sản",
+      "id": 5
+    },
+    {
+      "name": "Ngũ cốc",
+      "id": 6
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Chuối",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 2,
+      "name": "Táo",
+      "price": 35000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 3,
+      "name": "Nho",
+      "price": 50000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 4,
+      "name": "Xoài",
+      "price": 25000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 5,
+      "name": "Nhãn",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 6,
+      "name": "Bưởi",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 7,
+      "name": "Nho",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 8,
+      "name": "Măng cụt",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 9,
+      "name": "Bơ",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 10,
+      "name": "Thanh Long",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 11,
+      "name": "Vải",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    },
+    {
+      "id": 12,
+      "name": "Chôm Chôm",
+      "price": 30000,
+      "image": "https://source.unsplash.com/random",
+      "categoryId": 1
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "content": "Chuối ko ngon như kỳ vong",
+      "rating": 3,
+      "userId": 1,
+      "productId": 1
+    }
+  ],
+  "orders": [
+    {
+      "userId": 1,
+      "name": "Đạt",
+      "email": "ledat72000@gmail.com",
+      "phoneNumber": "0347567080",
+      "address": "86 Nguyễn Sinh Sắc, Phường Hòa Minh, Quận Liên Chiểu, TP Đà Nẵng",
+      "products": [
+        {
+          "id": "7936af5b-42c7-4fc9-9704-4eea2202958a",
+          "productId": 1,
+          "image": "https://source.unsplash.com/random",
+          "name": "Chuối",
+          "price": 30000,
+          "count": 2
+        }
+      ],
+      "totalPrice": 60000,
+      "checkoutInfo": "momo",
+      "status": "waiting",
+      "createdAt": 1628858649230,
+      "updatedAt": 1628858649230,
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "name": "User",
+      "email": "user@gmail.com",
+      "phoneNumber": "1234567890",
+      "address": "Nghệ An",
+      "products": [
+        {
+          "id": "f26ba1bc-411f-4411-a69e-dabc9daff005",
+          "productId": 2,
+          "image": "https://source.unsplash.com/random",
+          "name": "Táo",
+          "price": 35000,
+          "count": 3
+        },
+        {
+          "id": "b40bb188-f2e3-44f4-98ea-11fc92742a31",
+          "productId": 3,
+          "image": "https://source.unsplash.com/random",
+          "name": "Nho",
+          "price": 50000,
+          "count": 1
+        },
+        {
+          "id": "e2f765c5-dc49-4641-b9e0-fb376a177a42",
+          "productId": 5,
+          "image": "https://source.unsplash.com/random",
+          "name": "Nhãn",
+          "price": 30000,
+          "count": 2
+        }
+      ],
+      "totalPrice": 215000,
+      "checkoutInfo": "zalo",
+      "status": "waiting",
+      "createdAt": 1628858843753,
+      "updatedAt": 1628858843753,
+      "id": 2
+    },
+    {
+      "userId": 1,
+      "name": "Đạt",
+      "email": "ledat72000@gmail.com",
+      "phoneNumber": "0347567080",
+      "address": "Đà Nẵng",
+      "products": [
+        {
+          "id": "4b44c77f-0c9e-4bc5-9a72-4e2e7c78c3d4",
+          "productId": 9,
+          "image": "https://source.unsplash.com/random",
+          "name": "Bơ",
+          "price": 30000,
+          "count": 2
+        }
+      ],
+      "totalPrice": 60000,
+      "checkoutInfo": "momo",
+      "status": "waiting",
+      "createdAt": 1628861532077,
+      "updatedAt": 1628861532077,
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "name": "Đạt",
+      "email": "ledat72000@gmail.com",
+      "phoneNumber": "0347567080",
+      "address": "Đà Nẵng",
+      "products": [
+        {
+          "id": "4b44c77f-0c9e-4bc5-9a72-4e2e7c78c3d4",
+          "productId": 10,
+          "image": "https://source.unsplash.com/random",
+          "name": "Thanh Long",
+          "price": 30000,
+          "count": 3
+        }
+      ],
+      "totalPrice": 90000,
+      "checkoutInfo": "zalo",
+      "status": "waiting",
+      "createdAt": 1628861609558,
+      "updatedAt": 1628861609558,
+      "id": 4
+    }
+  ]
+}
