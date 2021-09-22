@@ -81,8 +81,24 @@ function* getUserInfoSaga(action) {
   }
 }
 
+function* editUserInfoSaga(action) {
+  try {
+    const { id, data } = action.payload;
+    const result = yield axios.patch(`${SERVER_API_URL}/users/${id}`, data);
+    yield put({
+      type: SUCCESS(USER_ACTION.EDIT_USER_INFO),
+      payload: {
+        data: result.data,
+      }
+    });
+  } catch (e) {
+    yield put({ type: FAILURE(USER_ACTION.EDIT_USER_INFO), payload: e.message });
+  }
+}
+
 export default function* userSaga() {
   yield takeEvery(REQUEST(USER_ACTION.LOGIN), loginSaga);
   yield takeEvery(REQUEST(USER_ACTION.REGISTER), registerSaga);
   yield takeEvery(REQUEST(USER_ACTION.GET_USER_INFO), getUserInfoSaga);
+  yield takeEvery(REQUEST(USER_ACTION.EDIT_USER_INFO), editUserInfoSaga);
 }

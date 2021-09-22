@@ -1,4 +1,6 @@
 import { Route, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Button } from 'antd';
 
 function AdminLayout(props) {
   const { exact, path, component: Component } = props;
@@ -17,7 +19,10 @@ function AdminLayout(props) {
           render={(routeProps) => {
             return (
               <>
-                ADMIN HEADER
+                ADMIN HEADER 
+                <Link to="/">
+                  <Button >Home Page</Button>
+                </Link>
                 <div className="main-container">
                   <Component {...routeProps} />
                 </div>

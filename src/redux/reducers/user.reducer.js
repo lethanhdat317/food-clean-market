@@ -139,6 +139,38 @@ function userReducer(state = initialState, action) {
         },
       };
     }
+    case REQUEST(USER_ACTION.EDIT_USER_INFO): {
+      const { error } = action.payload;
+      return {
+        ...state,
+        userInfo: {
+          ...state.userInfo,
+          load: false,
+        },
+      };
+    }
+    case SUCCESS(USER_ACTION.EDIT_USER_INFO): {
+      const { data } = action.payload;
+      return {
+        ...state,
+        userInfo: {
+          ...state.userInfo,
+          load: false,
+          error: null,
+        },
+      };
+    }
+    case FAILURE(USER_ACTION.EDIT_USER_INFO): {
+      const { error } = action.payload;
+      return {
+        ...state,
+        userInfo: {
+          ...state.userInfo,
+          load: false,
+          error,
+        },
+      };
+    }
     default:
       return state;
   }

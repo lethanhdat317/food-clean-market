@@ -1,4 +1,4 @@
-import { Row, Col, Image, Space } from "antd";
+import { Row, Col } from "antd";
 import { Link } from "react-router-dom";
 import logoHeader from "../../assets/images/logo-mixi-removebg.png";
 import { MailFilled, YoutubeFilled, FacebookFilled } from "@ant-design/icons";

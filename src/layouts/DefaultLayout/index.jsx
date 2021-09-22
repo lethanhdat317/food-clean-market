@@ -1,7 +1,6 @@
 import { Route } from "react-router-dom";
 
 import UserHeader from '../UserHeader';
-// import Header from '../Header';
 import UserFooter from '../UserFooter';
 
 function DefaultLayout(props) {
@@ -14,7 +13,7 @@ function DefaultLayout(props) {
       render={(routeProps) => {
         return (
           <>
-            <UserHeader /> 
+            <UserHeader type="user" /> 
             <div className="main-container">
               <Component {...routeProps} />
             </div>

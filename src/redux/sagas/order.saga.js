@@ -24,6 +24,23 @@ function* orderProductSaga(action) {
   }
 }
 
+function* getOrderHistorySaga(action) {
+  try {
+    const { userId } = action.payload;
+    const result = yield axios.get(`${SERVER_API_URL}/orders?userId=${userId}`);
+    yield put({
+      type: SUCCESS(ORDER_ACTION.GET_ORDER_HISTORY),
+      payload: {
+        data: result.data
+      },
+    });
+  } catch (e) {
+    yield put({ type: FAILURE(ORDER_ACTION.GET_ORDER_HISTORY), payload: e.message });
+  }
+}
+
 export default function* orderSaga() {
   yield takeEvery(REQUEST(ORDER_ACTION.ORDER_PRODUCT), orderProductSaga);
+  yield takeEvery(REQUEST(ORDER_ACTION.GET_ORDER_HISTORY), getOrderHistorySaga);
+
 }

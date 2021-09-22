@@ -1,19 +1,23 @@
 import {
-  Row, 
-  Col, 
-  Card, 
-  Input, 
-  Space, 
-  Pagination,
-  Button, 
-  InputNumber, 
+  Row,
+  Col,
+  Card,
+  Input,
+  Space,
+  Button,
   Carousel,
   Slider,
   Checkbox,
-  Select  } from "antd";
-// import Search from "antd/lib/transfer/search";
+  Select,
+  Tag,
+} from "antd";
 import { Link } from "react-router-dom";
-import { productList } from "../../../constants/product";
+// import { productList } from "../../../constants/product";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { PRODUCT_LIMIT } from '../../../constants/product';
+
+import { ShoppingCartOutlined, CarOutlined, SearchOutlined } from "@ant-design/icons";
 
 import banner1 from "../../../assets/images/banner-1.png";
 import banner2 from "../../../assets/images/banner-2.jpg";
@@ -25,189 +29,307 @@ import refresh from "../../../assets/images/refresh.png";
 import protect from "../../../assets/images/protect-filled.png";
 
 import imgContentsLeft from "../../../assets/images/left-contents.jpg";
-import {ShoppingCartOutlined, CarOutlined } from "@ant-design/icons";
 
+import {
+  getProductListAction,
+  getCategoryListAction,
+} from "../../../redux/actions";
 
 // css banner
 const contentStyle = {
-  height: '350px', 
-  width: '1350px',
-  marginBottom: '10px',
-  background: '#364d79'
+  height: "350px",
+  width: "1350px",
+  marginBottom: "10px",
+  background: "#364d79",
 };
 
-//input search
-const { Search } = Input;
-const onSearch = (value) => console.log(value);
 
 //select theo các hình thức
 const { Option } = Select;
 
-function onChange(value) {
-  console.log(`selected ${value}`);
-}
-
-function onBlur() {
-  console.log('blur');
-}
-
-function onFocus() {
-  console.log('focus');
-}
-
-// function onSearch(val) {
-//   console.log('search:', val);
-// }
-
-// const suffix = (
-//   <AudioOutlined
-//     style={{
-//       fontSize: 16,
-//       color: "#1890ff",
-//     }}
-//   />
-// );
-
-
-
 function HomePage() {
-  function onChange(checkedValues) {
-    console.log('checked = ', checkedValues);
+  const [categoriesSelected, setCategoriesSelect] = useState([]);
+  const [priceRange, setPriceRange] = useState([10000, 1000000]);
+  const [searchKey, setSearchKey] = useState("");
+
+  const { productList } = useSelector((state) => state.productReducer);
+  const { categoryList } = useSelector((state) => state.categoryReducer);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCategoryListAction());
+    dispatch(getProductListAction({ page: 1 }));
+  }, []);
+
+  function handleFilterCategory(value) {
+    setCategoriesSelect(value);
+    dispatch(
+      getProductListAction({
+        page: 1,
+        categoriesSelected: value,
+        priceRange,
+        searchKey,
+      })
+    );
   }
+
+  function handleRangePrice(value) {
+    setPriceRange(value);
+    dispatch(
+      getProductListAction({
+        page: 1,
+        categoriesSelected,
+        priceRange,
+        searchKey,
+      })
+    );
+  }
+
+  function handleSearchProduct(value) {
+    setSearchKey(value);
+    dispatch(
+      getProductListAction({
+        page: 1,
+        categoriesSelected,
+        priceRange,
+        searchKey: value,
+      })
+    );
+  }
+
+  function handleShowMore() {
+    dispatch(
+      getProductListAction({
+        page: productList.page + 1,
+        searchKey: searchKey,
+        categoriesSelected,
+        priceRange,
+        more: true,
+      })
+    );
+  }
+
+  function renderCategoryFilter() {
+    if (
+      categoriesSelected.length === 0 &&
+      !searchKey &&
+      priceRange[0] === 10000 &&
+      priceRange[1] === 1000000
+    )
+      return null;
+    return (
+      <Space wrap style={{ marginBottom: 16 }}>
+        Đang filter theo:
+        {categoriesSelected.length > 0 &&
+          categoriesSelected.map((selectedItem, selectedIndex) => {
+            const categorySelectedData = categoryList.data.find(
+              (categoryItem) => categoryItem.id === selectedItem
+            );
+            return (
+              <Tag
+                key={`category-${selectedIndex}`}
+                closable
+                onClose={(e) => {
+                  e.preventDefault();
+                  const newCategoriesSelect = [...categoriesSelected];
+                  newCategoriesSelect.splice(selectedIndex, 1);
+                  setCategoriesSelect(newCategoriesSelect);
+                  dispatch(
+                    getProductListAction({
+                      page: 1,
+                      categoriesSelected: newCategoriesSelect,
+                      priceRange,
+                      searchKey: searchKey,
+                    })
+                  );
+                }}
+              >
+                {categorySelectedData.name}
+              </Tag>
+            );
+          })}
+        {searchKey && (
+          <Tag
+            closable
+            onClose={() => {
+              setSearchKey("");
+              dispatch(
+                getProductListAction({
+                  page: 1,
+                  categoriesSelected,
+                  priceRange,
+                  searchKey: undefined,
+                })
+              );
+            }}
+          >
+            {`Tìm theo từ khóa: ${searchKey}`}
+          </Tag>
+        )}
+        {(priceRange[0] !== 0 || priceRange[1] !== 1000000) && (
+          <Tag
+            closable
+            onClose={() => {
+              setPriceRange([0, 1000000]);
+              dispatch(
+                getProductListAction({
+                  page: 1,
+                  categoriesSelected,
+                  priceRange: [0, 1000000],
+                  searchKey,
+                })
+              );
+            }}
+          >
+            {`Giá từ: ${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()}`}
+          </Tag>
+        )}
+      </Space>
+    );
+  }
+
+  function renderCategoryCheckbox() {
+    const categoryCheckbox = categoryList.data.map((categoryItem) => ({
+      label: categoryItem.name,
+      value: categoryItem.id,
+    }));
+    return (
+      <Checkbox.Group
+        options={categoryCheckbox}
+        onChange={(value) => handleFilterCategory(value)}
+        value={categoriesSelected}
+      />
+    );
+  }
+
   function renderProductList() {
-    return productList.map((productItem, productIndex) => {
+    return productList.data.map((productItem, productIndex) => {
       return (
-        <Col span={8} key={productIndex}>
+        <Col span={8} key={`product-item-${productItem.id}`}>
           <Link to={`/product/${productItem.id}`}>
-            <Card 
+          <Card
               hoverable
-              style={{ 
+              style={{
                 width: 300,
-               }}
+              }}
               cover={<img alt="example" src={productItem.image} />}
             >
               <h1>{productItem.name}</h1>
               <p>{`${productItem.price.toLocaleString()} VND`}</p>
-              <Row style={{
+              <Row
+                style={{
                   marginTop: 10,
-                  padding:0
-                }}>
-                  <Space >
-                    <Button type="primary" icon={<CarOutlined />}
-                      style={{
-                        marginLeft: -6,
-                        backgroundColor: '#237804'
-                      }}
-                    >
-                      Mua ngay
-                    </Button>
-                    <Button type="primary" icon={<ShoppingCartOutlined />} 
-                      style={{
-                        backgroundColor: '#389e0d'
-                      }}
-                    >
-                      Thêm vào giỏ
-                    </Button>
-                  </Space>
+                  padding: 0,
+                }}
+              >
+                <Space>
+                  <Button
+                    type="primary"
+                    icon={<CarOutlined />}
+                    style={{
+                      marginLeft: -6,
+                      backgroundColor: "#237804",
+                    }}
+                  >
+                    Mua ngay
+                  </Button>
+                  <Button
+                    type="primary"
+                    icon={<ShoppingCartOutlined />}
+                    style={{
+                      backgroundColor: "#389e0d",
+                    }}
+                  >
+                    Thêm vào giỏ
+                  </Button>
+                </Space>
               </Row>
             </Card>
           </Link>
         </Col>
+        
       );
     });
   }
+
+  
   return (
     <>
-    <Carousel autoplay>
-      <div>
-        <img src={banner1} alt="banner1"
-        style={contentStyle}/>
-      </div>
-      <div>
-        <img src={banner2} alt="banner2"  
-        style={contentStyle}/>
-      </div>
-      <div>
-        <img src={banner3} alt="banner3"  
-        style={contentStyle}/>
-      </div>
-      <div>
-        <img src={banner4} alt="banner4"  
-        style={contentStyle}/>
-      </div>
-    </Carousel>
-      <Row style={{marginLeft: 40,
-      marginRight: 40,
-      }}>
-        <Col span={6} 
-        style={{
-          // background: 'gray',
-           padding: '80px 5px 5px 5px'
-        }}
+      <Carousel autoplay>
+        <div>
+          <img src={banner1} alt="banner1" style={contentStyle} />
+        </div>
+        <div>
+          <img src={banner2} alt="banner2" style={contentStyle} />
+        </div>
+        <div>
+          <img src={banner3} alt="banner3" style={contentStyle} />
+        </div>
+        <div>
+          <img src={banner4} alt="banner4" style={contentStyle} />
+        </div>
+      </Carousel>
+      <Row style={{ marginLeft: 40, marginRight: 40 }}>
+        <Col
+          span={6}
+          style={{
+            // background: 'gray',
+            padding: "80px 5px 5px 5px",
+          }}
         >
-          <Row gutter={[0,0]}>
-          <p style={{
-            fontWeight: 'bold',
-            fontSize: 19
-          }}>
-            CÁC LOẠI SẢN PHẨM
-          </p>
-          <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
-              <Col span={24}>
-                <Checkbox value="A"><h3>Rau củ</h3></Checkbox>
-              </Col>
-              <Col span={24}>
-                <Checkbox value="B"><h3>Thịt</h3></Checkbox>
-              </Col>
-              <Col span={24}>
-                <Checkbox value="C"><h3>Cá</h3></Checkbox>
-              </Col>
-              <Col span={24}>
-                <Checkbox value="D"><h3>Hoa quả</h3></Checkbox>
-              </Col>
-              <Col span={24}>
-                <Checkbox value="E"><h3>Tôm</h3></Checkbox>
-              </Col>
-          </Checkbox.Group>
+          <Row gutter={[0, 0]}>
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: 19,
+              }}
+            >
+              CÁC LOẠI SẢN PHẨM
+            </p>
+            {renderCategoryCheckbox()}
           </Row>
-
-          <Row gutter={[0,0]} style={{
-            marginTop: 30
-          }}>
-          <p style={{
-            fontWeight: 'bold',
-            fontSize: 19
-          }}>
-            GIÁ BÁN
-          </p>
+          <Row
+            gutter={[0, 0]}
+            style={{
+              marginTop: 30,
+            }}
+          >
+            <p
+              style={{
+                fontWeight: "bold",
+                fontSize: 19,
+              }}
+            >
+              GIÁ BÁN
+            </p>
             <Col span={24}>
               <Slider
-                range min={10000}
-                max={1000000}
-                step={10000} 
-                defaultValue={[10000, 100000]}
-              />
-            </Col>
-            <Col span={24}>
-              <InputNumber
+                style={{width:'90%'}}
                 min={10000}
                 max={1000000}
                 step={10000}
-                style={{ marginLeft: 50, marginRight: 10 }}
-                // value={inputValue}
-                // onChange={this.onChange}
-              />VND
+                range
+                tipFormatter={(value) => value.toLocaleString()}
+                onChange={(value) => handleRangePrice(value)}
+                value={priceRange}
+              />
             </Col>
+            
           </Row>
-          <Row gutter={[0,0]} style={{
-            marginTop: 30
-          }}>
-          
+          <Row
+            gutter={[0, 0]}
+            style={{
+              marginTop: 30,
+            }}
+          >
             <Col span={24}>
-              <p style={{
-                fontWeight: 'bold',
-                fontSize: 19
-              }}>
+              <p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 19,
+                }}
+              >
                 SẢN PHẨM NỔI BẬT
               </p>
             </Col>
@@ -220,104 +342,121 @@ function HomePage() {
               <br />
               <br />
               <br />
-              <br /> 
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br /> 
             </Col>
-            <Col span={24} style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}>
-              <img src={imgContentsLeft} alt="imgContentsLeft" style={{
-                width: '90%', 
-              }} />
+            <Col
+              span={24}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={imgContentsLeft}
+                alt="imgContentsLeft"
+                style={{
+                  width: "90%",
+                }}
+              />
             </Col>
-            <Col span={24} >
-              <p className='text-center'>Tại sao nên chọn chúng tôi</p>
-              <ul className='group-list'>
+            <Col span={24}>
+              <p className="text-center">Tại sao nên chọn chúng tôi</p>
+              <ul className="group-list">
                 <li>
-                  <img src={certificate} alt="certificate" className='group-list-image'
-                    style={{margin: '0 0.4em 0 -0.3em'}}
+                  <img
+                    src={certificate}
+                    alt="certificate"
+                    className="group-list-image"
+                    style={{ margin: "0 0.4em 0 -0.3em" }}
                   />
                   <span>Sản phẩm đạt chuẩn an toàn thực phẩm</span>
                 </li>
                 <li>
-                  <img src={ship} alt="ship" className='group-list-image'
-                    style={{width: 21, margin: '0 0.4em 4px 0'}}
+                  <img
+                    src={ship}
+                    alt="ship"
+                    className="group-list-image"
+                    style={{ width: 21, margin: "0 0.4em 4px 0" }}
                   />
                   <span>Giao hàng toàn quốc</span>
                 </li>
                 <li>
-                  <img src={refresh} alt="refresh" className='group-list-image'
-                     style={{width: 22, margin: '5px 0.3em 4px 0'}}
+                  <img
+                    src={refresh}
+                    alt="refresh"
+                    className="group-list-image"
+                    style={{ width: 22, margin: "5px 0.3em 4px 0" }}
                   />
                   <span>Đổi trả trong vòng 15 ngày</span>
                 </li>
-                {/* <li>
-                  <img src={protect} alt="" className='group-list-image'/>
-                  <span></span>
-                </li> */}
               </ul>
             </Col>
           </Row>
-
-        
         </Col>
-        
-        <Col span={18} style={{
-          // background: '#e6f7ff'
-          }}>
 
-                  <Search
-                    placeholder="Tìm kiếm..."
-                    onSearch={onSearch}
-                    enterButton
-                    style={{
-                      width: 600,
-                      marginTop: 20,
-                      marginLeft: 200,
-                    }}
-                  />
+        <Col
+          span={18}
+          style={
+            {
+              // background: '#e6f7ff'
+            }
+          }
+        >
+          <Input
+            placeholder="Tìm kiếm..."
+            onChange={(e) => handleSearchProduct(e.target.value)}
+            value={searchKey}
+            suffix={<SearchOutlined />}
+            style={{ marginBottom: 16, width: '80%', margin: '0px auto'}}
+          />
+          {renderCategoryFilter()}
 
-                <div style={{
-                  display: "flex", 
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  marginTop: 20,
-                  paddingRight: '5%'
-                }}>
-                  <Select
-                    className='select-product'
-                    showSearch
-                    style={{ width: 200, marginBottom: 15}}
-                    placeholder="Phân loại mặc định"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSearch={onSearch}
-                    filterOption={(input, option) =>
-                      option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    <Option value="up">Giá từ thấp đến cao</Option>
-                    <Option value="down">Giá từ cao đến thấp</Option>
-                    <Option value="new">Sản phẩm mới nhất</Option>
-                  </Select>
-                </div>
-          <div style={{ padding: 10 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              marginTop: 20,
+              paddingRight: "5%",
+            }}
+          >
+            <Select
+              className="select-product"
+              showSearch
+              style={{ width: 200, marginBottom: 15 }}
+              placeholder="Phân loại mặc định"
+              optionFilterProp="children"
+              bordered={false}
+              // onChange={onChange}
+              // onFocus={onFocus}
+              // onBlur={onBlur}
+              // onSearch={onSearch}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              <Option value="up">Giá từ thấp đến cao</Option>
+              <Option value="down">Giá từ cao đến thấp</Option>
+              <Option value="new">Sản phẩm mới nhất</Option>
+            </Select>
+          </div>
+          <div style={{ padding: 0 }}>
             <Row gutter={[22, 25]}>{renderProductList()}</Row>
           </div>
-          <Row style={{
-            marginBottom: 10
-          }}>
-            <Pagination defaultCurrent={1} size='small' total={50} span={1} style={{
-              margin: '20px auto'
-            }}/>
+          <Row
+            style={{
+              marginBottom: 10,
+            }}
+          >
+            {productList.data.length % PRODUCT_LIMIT === 0 && (
+              <Row justify="center" style={{ marginTop: 16 }}>
+                <Button onClick={() => handleShowMore()}
+                  style={{marginLeft:'30em'}}
+                >
+                  Show more
+                </Button>
+              </Row>
+            )}
           </Row>
         </Col>
       </Row>

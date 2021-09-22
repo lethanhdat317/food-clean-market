@@ -1,7 +1,41 @@
 import { Form, Input, Select, Button, Checkbox } from "antd";
 import { Link } from "react-router-dom";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { registerAction } from '../../redux/actions';
 
 function RegisterPage() {
+
+  const { responseAction } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
+
+  const [registerForm] = Form.useForm();
+  
+  useEffect(() => {
+    if (responseAction.register.error) {
+      registerForm.setFields([
+        {
+          name: 'email',
+          errors: [responseAction.register.error]
+        },
+      ]);
+    }
+  }, [responseAction.register])
+
+  function handleSubmit(values) {
+    dispatch(registerAction({
+      data: {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        gender: values.gender,
+        cart: [],
+        role: 'user',
+      },
+    }));
+  }
+
   return (
     <div className="register-container">
       <div className="login-register-form">
@@ -9,10 +43,11 @@ function RegisterPage() {
           <h2>Register</h2>
         </div>
         <Form
+          form={registerForm}
           name="basic"
           layout="vertical"
           initialValues={{ remember: true }}
-          onFinish={(values) => console.log(values)}
+          onFinish={(values) => handleSubmit(values)}
         >
           <Form.Item
             label="Tên"
@@ -66,7 +101,7 @@ function RegisterPage() {
             rules={[
               {
                 required: true,
-                message: "Please confirm your password!",
+                message: "Bạn chưa xác nhận lại mật khẩu!",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -75,7 +110,7 @@ function RegisterPage() {
                   }
                   return Promise.reject(
                     new Error(
-                      "The two passwords that you entered do not match!"
+                      "Mật khẩu xác nhận không chính xác!"
                     )
                   );
                 },
@@ -95,10 +130,17 @@ function RegisterPage() {
 
           <div style={{ display: "inline-block", marginBottom: 16 }}>
             Bạn đã có tài khoản?&nbsp;
-            <Link to="/login">Đăng nhập</Link>
+            <Link to="/login" style={{color: '#0050b3'}}>
+              Đăng nhập
+            </Link>
           </div>
 
-          <Button type="primary" htmlType="submit" block>
+          <Button 
+            type="primary" 
+            htmlType="submit" 
+            block
+            loading={responseAction.register.load}
+          >
             Đăng kí
           </Button>
         </Form>
