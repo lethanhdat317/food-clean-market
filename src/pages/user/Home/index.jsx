@@ -224,7 +224,7 @@ function HomePage() {
                 }}
               >
                 <Space>
-                  <Button
+                  {/* <Button
                     type="primary"
                     icon={<CarOutlined />}
                     style={{
@@ -233,8 +233,8 @@ function HomePage() {
                     }}
                   >
                     Mua ngay
-                  </Button>
-                  <Button
+                  </Button> */}
+                  {/* <Button
                     type="primary"
                     icon={<ShoppingCartOutlined />}
                     style={{
@@ -242,7 +242,7 @@ function HomePage() {
                     }}
                   >
                     Thêm vào giỏ
-                  </Button>
+                  </Button> */}
                 </Space>
               </Row>
             </Card>

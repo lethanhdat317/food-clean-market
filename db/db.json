@@ -16,10 +16,19 @@
       "password": "$2a$10$BflBnHdPbDRiVxBAWaQ4e.8AOQur6wayAn7k4xfyE9sKMe6mIC7J.",
       "name": "User",
       "gender": "female",
-      "cart": [],
+      "cart": [
+        {
+          "id": "836e3cff-5ed0-4abb-a820-e120e770c25f",
+          "productId": 49,
+          "image": "https://source.unsplash.com/random",
+          "name": "Sprite chanh",
+          "price": 20000,
+          "count": 1
+        }
+      ],
       "role": "user",
       "createdAt": 1631621896647,
-      "updatedAt": 1632044334755,
+      "updatedAt": 1638331008541,
       "id": 2
     }
   ],

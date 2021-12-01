@@ -136,7 +136,7 @@ function ProductDetailPage({ match }) {
             />
           </div>
           <Space>
-            <Button
+            {/* <Button
               type="primary"
               icon={<CarOutlined />}
               style={{
@@ -145,7 +145,7 @@ function ProductDetailPage({ match }) {
               }}
             >
               Mua ngay
-            </Button>
+            </Button> */}
             <Button
               type="primary"
               icon={<ShoppingCartOutlined />}
